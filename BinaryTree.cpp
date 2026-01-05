@@ -213,3 +213,14 @@ BNode* converToBinary(GNode* root) {
 	}
 	return broot;
  }
+
+GNode* convertToGen(BNode* root) {
+	if (!root) return nullptr;
+	GNode* g = new GNode(root->val);
+	BNode* child = root->left;
+	while (child) {
+		g->children.push_back(convertToGen(child));
+		child = child->right;
+	}
+	return g;
+}
