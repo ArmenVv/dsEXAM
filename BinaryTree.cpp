@@ -1,6 +1,7 @@
 #include <iostream>
 #include <queue>
 #include <stack>
+#include <vector>
 using namespace std;
 
 class BinaryTree {
@@ -169,6 +170,46 @@ public:
 			st2.pop()
 		}
 	}
+	void levelOrder(treeNode<T> *root){
+		if (!root) return;
+		queue<treeNode<T>*>q;
+		q.push(root);
+		while (!q.empty()) {
+			Node* cur = q.front();
+			q.pop();
+			cout << cur->val << " ";
+			if (cur->left)
+				q.push(cur->left);
+			if (cur->right)
+				q.push(cur->right);
+		}
+	}
 private:
 	treeNode<T>* root;
 };
+
+struct GNode {
+	int val;
+	vector<GNode*> children;
+	GNode(int x):val(x) {};
+};
+
+struct BNode {
+	int val;
+	BNode* left, * right;
+	BNode(int x) : val(x), left(nullptr), right(nullptr) {};
+};
+
+BNode* converToBinary(GNode* root) {
+	if (!root) return nullptr;
+	BNode* broot = new BNode(root->val); 
+	if (!root->children.empty()) {
+		broot->left = converToBinary(root->children[0]);
+		BNode* cur = broot->left;
+		for (int i = 1; i < root->children.size(); i++) {
+			cur->right = converToBinary(root->children[i]);
+			cur = cur->right;
+		}
+	}
+	return broot;
+ }
